@@ -19,7 +19,8 @@ def transcribe_audio(audio_path, model_size="base", device="cpu", compute_type="
     model = WhisperModel(model_size, device=device, compute_type=compute_type)
     
     logging.info(f"Transcribing {audio_path}...")
-    segments, info = model.transcribe(audio_path, beam_size=5)
+    # Using vad_filter=True avoids including leading music/silence in the first segment
+    segments, info = model.transcribe(audio_path, beam_size=5, vad_filter=True)
     
     logging.info(f"Detected language '{info.language}' with probability {info.language_probability:.2f}")
     
